@@ -25,13 +25,17 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          # 注意：我这里特意去掉了 cache: 'npm'，防止你像上个项目一样报错
+          # 这里去掉了 cache: 'npm' 防止报错
 
       - name: Install dependencies
         run: npm install
 
+      # 👇👇👇 重点修改了这一步 👇👇👇
       - name: Build project
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: npm run build
+      # 👆👆👆 必须加上 env 这一段 👆👆👆
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
